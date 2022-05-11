@@ -92,6 +92,7 @@ public class CommandHandler extends CommandBase {
                         }
                     }
                 });
+                break;
             case "removeMessageFromList":
                 try {
                     String[] str = Arrays.copyOfRange(args, 1, args.length);
