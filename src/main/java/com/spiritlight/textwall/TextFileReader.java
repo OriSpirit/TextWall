@@ -27,7 +27,7 @@ public class TextFileReader {
             }
             fr.close();
         } catch (IOException ex) {
-            message.send("An error has occurred: " + ex.getClass().getCanonicalName() + " (Check console for more information)");
+            message.send("§cAn error has occurred: " + ex.getClass().getCanonicalName() + " (Check console for more information)");
             ex.printStackTrace();
         }
         return text;

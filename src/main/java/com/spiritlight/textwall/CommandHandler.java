@@ -43,32 +43,32 @@ public class CommandHandler extends CommandBase {
             case "record":
                 MainMod.awaitMessage = true;
                 MainMod.messages = new ArrayList<>();
-                message.send("Started recording message, use /tw stop to stop. Send any message to record.");
+                message.send("§aStarted recording message, use /tw stop to stop. Send any message to record.");
                 break;
             case "stop":
                 MainMod.awaitMessage = false;
-                message.send("Stopped recording message, use /tw send <delay/no args> to send");
+                message.send("§aStopped recording message, use /tw send <delay/no args> to send");
                 //message.send("");
                 break;
             case "clear":
                 MainMod.messages = new ArrayList<>();
-                message.send("Cleared message list");
+                message.send("§aCleared message list");
                 break;
             case "load":
                 MainMod.messages = new ArrayList<>();
                 if (args.length == 1) {
-                    message.send("You must supply a file path.");
+                    message.send("§cYou must supply a file path.");
                     break;
                 }
                 String[] arr = Arrays.copyOfRange(args, 1, args.length);
                 String fileDestination = String.join(" ", arr);
                 fileDestination = fileDestination.trim();
-                message.send("Opening file " + fileDestination);
+                message.send("§aOpening file " + fileDestination);
                 MainMod.messages = TextFileReader.readTextFile(fileDestination);
                 break;
             case "send":
                 if(MainMod.messages.isEmpty()) {
-                    message.send("Unable to send empty message.");
+                    message.send("§cUnable to send empty message.");
                     break;
                 }
                 int delay;
@@ -77,7 +77,7 @@ public class CommandHandler extends CommandBase {
                 } catch (IndexOutOfBoundsException|NumberFormatException ignored) {
                     delay = 0;
                 }
-                message.send("Sending message!");
+                message.send("§aSending message!");
                 int finalDelay = delay;
                 CompletableFuture.runAsync(() -> {
                     for (int i = 0; i < MainMod.messages.size(); i++) {
@@ -98,7 +98,7 @@ public class CommandHandler extends CommandBase {
                     String[] str = Arrays.copyOfRange(args, 1, args.length);
                     String st2 = String.join(" ", str);
                     MainMod.messages.remove(st2);
-                    message.send("Removed message " + st2 + " from list!");
+                    message.send("§aRemoved message " + st2 + " from list!");
                 } catch (IndexOutOfBoundsException ignored) {}
             default:
                 break;

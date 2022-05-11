@@ -55,6 +55,13 @@ minecraft {
     }
 }
 
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
 

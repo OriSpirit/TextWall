@@ -11,7 +11,7 @@ public class onMessageEvent {
     @SubscribeEvent
     public void onMessage(ClientChatEvent event) {
         if(MainMod.awaitMessage && !event.getMessage().equals("/tw stop")) {
-            TextComponentString s = new TextComponentString("Added " + event.getMessage() + " to message list.");
+            TextComponentString s = new TextComponentString("§aAdded §b" + event.getMessage() + " §ato message list.");
             s.setStyle(new Style().setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tw removeMessageFromList " + event.getMessage())).setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Click to remove this phrase from list!"))));
             message.send(s);
             MainMod.messages.add(event.getMessage());
