@@ -1,0 +1,16 @@
+[
+{
+  "modid": "textwall",
+  "name": "TextWall",
+  "description": "Sending multiple messages using text files or per line inputs.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["OriTheSpirit"],
+  "credits": "The Forge and FML guys, for making this example",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
