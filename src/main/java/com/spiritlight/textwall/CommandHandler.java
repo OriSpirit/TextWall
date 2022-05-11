@@ -39,7 +39,20 @@ public class CommandHandler extends CommandBase {
             message.send("/tw clear - Clears messages");
             message.send("/tw load - Loads message from text files (local)");
             message.send("/tw send [delay] - Sends messages with delay in ms");
+            message.send("/tw setprefix [prefix] - Sets prefix before message sent");
+            message.send("protip: use ${space} for space in the ending");
+            message.send("Prefix defined? " + (MainMod.prefix.equals("") ? false : "true: '" + MainMod.prefix + "'"));
         } else switch(args[0]) {
+            case "setprefix":
+                if(args.length == 1) {
+                    message.send("§aCleared prefix.");
+                    break;
+                }
+                String[] msg = Arrays.copyOfRange(args, 1, args.length);
+                String s = String.join(" ", msg).replace("${space}", " ");
+                MainMod.prefix = s;
+                message.send("§aPrefix set as §b" + s);
+                break;
             case "record":
                 MainMod.awaitMessage = true;
                 MainMod.messages = new ArrayList<>();
@@ -81,7 +94,7 @@ public class CommandHandler extends CommandBase {
                 int finalDelay = delay;
                 CompletableFuture.runAsync(() -> {
                     for (int i = 0; i < MainMod.messages.size(); i++) {
-                        Minecraft.getMinecraft().player.sendChatMessage(MainMod.messages.get(i));
+                        Minecraft.getMinecraft().player.sendChatMessage(MainMod.prefix + MainMod.messages.get(i));
                         if(finalDelay != 0) {
                             try {
                                 //noinspection BusyWait
