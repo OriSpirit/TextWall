@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +24,8 @@ public class MainMod
     static String prefix = "";
 
     @EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
-
+    public void preInit(FMLPreInitializationEvent event) throws IOException {
+        ConfigSpirit.getConfig();
     }
 
     @EventHandler

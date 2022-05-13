@@ -5,13 +5,19 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.HoverEvent;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 public class CommandHandler extends CommandBase {
+    static String fileDestination;
 
     @Override
     public int getRequiredPermissionLevel() {
@@ -37,7 +43,9 @@ public class CommandHandler extends CommandBase {
             message.send("/tw record - Starts recording messages");
             message.send("/tw stop - Stops recording messages");
             message.send("/tw clear - Clears messages");
+            message.send("/tw list - Lists all recorded messages stored");
             message.send("/tw load - Loads message from text files (local)");
+            message.send("/tw reload - Reloads current loaded file");
             message.send("/tw send [delay] - Sends messages with delay in ms");
             message.send("/tw setprefix [prefix] - Sets prefix before message sent");
             message.send("protip: use ${space} for space in the ending");
@@ -52,6 +60,12 @@ public class CommandHandler extends CommandBase {
                 String s = String.join(" ", msg).replace("${space}", " ");
                 MainMod.prefix = s;
                 message.send("§aPrefix set as §b" + s);
+                try {
+                    ConfigSpirit.writeConfig();
+                } catch (IOException e) {
+                    message.send("§cJust kidding, an error occurred: §4" + e.getClass().getCanonicalName());
+                    e.printStackTrace();
+                }
                 break;
             case "record":
                 MainMod.awaitMessage = true;
@@ -74,10 +88,24 @@ public class CommandHandler extends CommandBase {
                     break;
                 }
                 String[] arr = Arrays.copyOfRange(args, 1, args.length);
-                String fileDestination = String.join(" ", arr);
-                fileDestination = fileDestination.trim();
+                fileDestination = String.join(" ", arr).trim();
                 message.send("§aOpening file " + fileDestination);
                 MainMod.messages = TextFileReader.readTextFile(fileDestination);
+                break;
+            case "list":
+                for(int i=0; i<MainMod.messages.size(); i++) {
+                    TextComponentString st = new TextComponentString("§a[" + i + "] §b" + MainMod.messages.get(i));
+                    st.setStyle(new Style().setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tw removeMessageFromList " + MainMod.messages.get(i))).setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Click to remove this phrase from list!"))));
+                    message.send(st);
+                }
+                break;
+            case "reload":
+                if(fileDestination.length() >= 1) {
+                    MainMod.messages = TextFileReader.readTextFile(fileDestination);
+                    message.send("Reloaded text file!");
+                }
+                else
+                    message.send("§cFile destination must be set first.");
                 break;
             case "send":
                 if(MainMod.messages.isEmpty()) {
@@ -113,7 +141,9 @@ public class CommandHandler extends CommandBase {
                     MainMod.messages.remove(st2);
                     message.send("§aRemoved message " + st2 + " from list!");
                 } catch (IndexOutOfBoundsException ignored) {}
+                break;
             default:
+                message.send("§cUnknown command, try /tw");
                 break;
         }
     }
