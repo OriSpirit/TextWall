@@ -12,6 +12,8 @@
   
 - /tw stop - Stops recording.
   
+- Use /tw in game for more command usages (These are just a few)
+  
   
   ### Building:
   
