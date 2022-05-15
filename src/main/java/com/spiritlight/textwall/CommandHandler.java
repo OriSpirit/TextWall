@@ -128,7 +128,7 @@ public class CommandHandler extends CommandBase {
                     delay = 0;
                 }
                 message.send("§aSending message!");
-                if(MainMod.messages.size() >= 10 && delay <= 200) {
+                if(MainMod.messages.size() >= 10) {
                     message.send("Your message:delay is too large, it has been set to 200ms.");
                     message.send("Consider lowering your message count or increase the delay as you can get kicked for spamming.");
                     delay = 200;
