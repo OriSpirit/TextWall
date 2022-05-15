@@ -18,6 +18,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class CommandHandler extends CommandBase {
     static String fileDestination;
+    private boolean saf = false;
 
     @Override
     public int getRequiredPermissionLevel() {
@@ -111,6 +112,11 @@ public class CommandHandler extends CommandBase {
                     message.send("§cFile destination must be set first.");
                 break;
             case "send":
+                if(saf) {
+                    message.send("Please wait for current message session to end.");
+                    break;
+                }
+                saf = true;
                 if(MainMod.messages.isEmpty()) {
                     message.send("§cUnable to send empty message.");
                     break;
@@ -122,6 +128,11 @@ public class CommandHandler extends CommandBase {
                     delay = 0;
                 }
                 message.send("§aSending message!");
+                if(MainMod.messages.size() >= 10 && delay <= 200) {
+                    message.send("Your message:delay is too large, it has been set to 200ms.");
+                    message.send("Consider lowering your message count or increase the delay as you can get kicked for spamming.");
+                    delay = 200;
+                }
                 int finalDelay = delay;
                 CompletableFuture.runAsync(() -> {
                     for (int i = 0; i < MainMod.messages.size(); i++) {
@@ -136,6 +147,7 @@ public class CommandHandler extends CommandBase {
                         }
                     }
                 });
+                saf = false;
                 break;
             case "removeMessageFromList":
                 try {
