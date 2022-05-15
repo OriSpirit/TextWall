@@ -50,7 +50,7 @@ public class TextFileReader {
             }
             if(!t.substring(0, temp).equals(""))
                 MainMod.messages.add(t.substring(0, temp));
-            t = t.substring(ml);
+            t = t.substring(temp);
         }
     }
 }
