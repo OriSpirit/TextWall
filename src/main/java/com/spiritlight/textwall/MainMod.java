@@ -6,10 +6,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +22,9 @@ public class MainMod
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         ConfigSpirit.getConfig();
+        if(CommandHandler.fileDestination.length() != 0) {
+            TextFileReader.readTextFile(CommandHandler.fileDestination);
+        }
     }
 
     @EventHandler

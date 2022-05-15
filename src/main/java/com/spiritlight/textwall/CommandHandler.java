@@ -50,6 +50,7 @@ public class CommandHandler extends CommandBase {
             message.send("/tw setprefix [prefix] - Sets prefix before message sent");
             message.send("protip: use ${space} for space in the ending");
             message.send("Prefix defined? " + (MainMod.prefix.equals("") ? false : "true: '" + MainMod.prefix + "'"));
+            message.send("Path defined? " + (fileDestination.equals("") ? false : "true: '" + fileDestination + "'"));
         } else switch(args[0]) {
             case "setprefix":
                 if(args.length == 1) {
@@ -92,6 +93,7 @@ public class CommandHandler extends CommandBase {
                 fileDestination = String.join(" ", arr).trim();
                 message.send("§aOpening file " + fileDestination);
                 TextFileReader.readTextFile(fileDestination);
+                ConfigSpirit.writeConfig();
                 break;
             case "list":
                 for(int i=0; i<MainMod.messages.size(); i++) {
