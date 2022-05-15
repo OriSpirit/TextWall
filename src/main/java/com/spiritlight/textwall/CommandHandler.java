@@ -9,9 +9,9 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
@@ -26,13 +26,13 @@ public class CommandHandler extends CommandBase {
 
     @ParametersAreNonnullByDefault
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "tw";
     }
 
     @ParametersAreNonnullByDefault
     @Override
-    public String getUsage(ICommandSender sender) {
+    public @NotNull String getUsage(ICommandSender sender) {
         return "/tw";
     }
 
@@ -54,18 +54,19 @@ public class CommandHandler extends CommandBase {
             case "setprefix":
                 if(args.length == 1) {
                     message.send("§aCleared prefix.");
+                    MainMod.prefix = "";
+                    ConfigSpirit.writeConfig();
                     break;
                 }
                 String[] msg = Arrays.copyOfRange(args, 1, args.length);
                 String s = String.join(" ", msg).replace("${space}", " ");
+                if(s.length() > 120) {
+                    message.send("Prefix cannot be longer than 120 characters.");
+                    break;
+                }
                 MainMod.prefix = s;
                 message.send("§aPrefix set as §b" + s);
-                try {
-                    ConfigSpirit.writeConfig();
-                } catch (IOException e) {
-                    message.send("§cJust kidding, an error occurred: §4" + e.getClass().getCanonicalName());
-                    e.printStackTrace();
-                }
+                ConfigSpirit.writeConfig();
                 break;
             case "record":
                 MainMod.awaitMessage = true;
@@ -90,7 +91,7 @@ public class CommandHandler extends CommandBase {
                 String[] arr = Arrays.copyOfRange(args, 1, args.length);
                 fileDestination = String.join(" ", arr).trim();
                 message.send("§aOpening file " + fileDestination);
-                MainMod.messages = TextFileReader.readTextFile(fileDestination);
+                TextFileReader.readTextFile(fileDestination);
                 break;
             case "list":
                 for(int i=0; i<MainMod.messages.size(); i++) {
@@ -101,7 +102,7 @@ public class CommandHandler extends CommandBase {
                 break;
             case "reload":
                 if(fileDestination.length() >= 1) {
-                    MainMod.messages = TextFileReader.readTextFile(fileDestination);
+                    TextFileReader.readTextFile(fileDestination);
                     message.send("Reloaded text file!");
                 }
                 else

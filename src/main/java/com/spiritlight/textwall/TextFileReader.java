@@ -1,64 +1,56 @@
 package com.spiritlight.textwall;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class TextFileReader {
 
-    static List<String> readTextFile(String directory) {
-        List<String> text = new ArrayList<>();
+    static void readTextFile(String directory) {
         try {
             File file = new File(directory);
             FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
             String line;
             while ((line = br.readLine()) != null) {
-                List<String> l = safeChatSize(line);
-                MainMod.messages.addAll(l);
+                safeChatSize(line);
             }
             fr.close();
         } catch (IOException ex) {
             message.send("§cAn error has occurred: " + ex.getClass().getCanonicalName() + " (Check console for more information)");
             ex.printStackTrace();
         }
-        return text;
     }
 
     // 11pm coding be like
-    private static List<String> safeChatSize(String message) {
-        List<String> l = new ArrayList<>();
-        if(message.length() < 255)
-            return Collections.singletonList(message);
-        int len = message.length();
-        int ml = (256 - MainMod.prefix.length());
-        // int mi = len / ml - (len % ml == 0 ? 0 : 1);
-        int sc = 255;
+    private static void safeChatSize(@NotNull String message) {
+        final int ml = (256 - MainMod.prefix.length());
+        System.out.println("Operating with length " + message.length());
+        String t = message;
+        if(t.length() < ml && !t.equals("")) {
+            MainMod.messages.add(message);
+            return;
+        }
         char[] c = {'.', ',', ' '}; // by priority
-        while(len > (ml - MainMod.prefix.length())) {
-            int m;
-            int n = 256;
+        while(t.length() > ml) {
+            int temp = 256 - MainMod.prefix.length();
             int[] in = {-1, -1, -1};
+            String tmp = t.substring(0, 255);
             for(int x=0; x<c.length; x++) {
-                m = message.indexOf(c[x]); // acq int ind
-                if(ml - m < n && m < ml) { // we want close to 0 as possible
-                    in[x] = m;
-                }
-                n = m;
+                in[x] = tmp.lastIndexOf(c[x]);
             }
             for (int i : in) {
-                if (i != -1) {
-                    sc = i;
+                if (i > 0) {
+                    temp = i;
                     break;
                 }
             }
-            l.add(message.substring(0, sc));
-            message = message.substring(sc);
+            if(!t.substring(0, temp).equals(""))
+                MainMod.messages.add(t.substring(0, temp));
+            t = t.substring(ml);
         }
-        return l;
     }
 }
