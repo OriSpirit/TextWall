@@ -16,11 +16,13 @@ public class ConfigSpirit {
                 JsonParser parser = new JsonParser();
                 JsonObject jsonObject = (JsonObject) parser.parse(new FileReader("config/TextWall.json"));
                 MainMod.prefix = String.valueOf(jsonObject.get("prefix")).replace("\"", ""); // Funny bug!
+                CommandHandler.fileDestination = String.valueOf(jsonObject.get("dir")).replace("\"", "");
             } else {
                 writeConfig();
             }
         } catch (IOException e) {
             e.printStackTrace();
+            writeConfig();
         }
     }
 
@@ -29,6 +31,7 @@ public class ConfigSpirit {
             JsonWriter writer = new JsonWriter(new FileWriter("config/TextWall.json"));
             writer.beginObject();
             writer.name("prefix").value(MainMod.prefix);
+            writer.name("dir").value(CommandHandler.fileDestination);
             writer.endObject();
             writer.close();
         } catch (IOException e) {
