@@ -125,7 +125,7 @@ public class CommandHandler extends CommandBase {
                 try {
                     delay = Integer.parseInt(args[1]);
                 } catch (IndexOutOfBoundsException|NumberFormatException ignored) {
-                    delay = 0;
+                    delay = 10;
                 }
                 message.send("§aSending message!");
                 if(MainMod.messages.size() >= 10) {
@@ -133,17 +133,18 @@ public class CommandHandler extends CommandBase {
                     message.send("Consider lowering your message count or increase the delay as you can get kicked for spamming.");
                     delay = 200;
                 }
+                if(delay < 10) {
+                    delay = 10; // Need this to ensure that the messages are sent in order
+                }
                 int finalDelay = delay;
                 CompletableFuture.runAsync(() -> {
                     for (int i = 0; i < MainMod.messages.size(); i++) {
                         Minecraft.getMinecraft().player.sendChatMessage(MainMod.prefix + MainMod.messages.get(i));
-                        if(finalDelay != 0) {
-                            try {
-                                //noinspection BusyWait
-                                Thread.sleep(finalDelay);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                        try {
+                            //noinspection BusyWait
+                            Thread.sleep(finalDelay);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
                     }
                 });
