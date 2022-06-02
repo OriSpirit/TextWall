@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class TextFileReader {
 
-    static void readTextFile(String directory) {
+    public static void readTextFile(String directory) {
         try {
             File file = new File(directory);
             FileReader fr = new FileReader(file);
@@ -30,7 +30,7 @@ public class TextFileReader {
 
     // 11pm coding be like
     private static void safeChatSize(@NotNull String message) {
-        final int ml = (256 - MainMod.prefix.length());
+        final int ml = (255 - MainMod.prefix.length());
         System.out.println("Operating with length " + message.length());
         String t = message;
         if(t.length() < ml && !t.equals("")) {
@@ -39,7 +39,7 @@ public class TextFileReader {
         }
         char[] c = {'.', ',', ' '}; // by priority
         while(t.length() > ml) {
-            int temp = 256 - MainMod.prefix.length();
+            int temp = 255 - MainMod.prefix.length();
             int[] in = {-1, -1, -1};
             String tmp = t.substring(0, 255);
             for(int x=0; x<c.length; x++) {
@@ -51,9 +51,9 @@ public class TextFileReader {
                     break;
                 }
             }
-            if(!t.substring(0, temp).equals(""))
-                MainMod.messages.add(t.substring(0, temp));
-            t = t.substring(temp);
+            if(!t.substring(0, temp+1).equals(""))
+                MainMod.messages.add(t.substring(0, temp+1));
+            t = t.substring(temp+1);
         }
     }
 }
