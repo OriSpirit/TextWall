@@ -22,7 +22,7 @@ public class MainMod
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         ConfigSpirit.getConfig();
-        if(CommandHandler.fileDestination.length() != 0) {
+        if(CommandHandler.fileDestination != null) {
             TextFileReader.readTextFile(CommandHandler.fileDestination);
         }
     }
