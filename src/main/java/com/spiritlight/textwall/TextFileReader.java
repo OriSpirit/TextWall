@@ -55,5 +55,6 @@ public class TextFileReader {
                 MainMod.messages.add(t.substring(0, temp+1));
             t = t.substring(temp+1).trim();
         }
+        MainMod.messages.add(t);
     }
 }
