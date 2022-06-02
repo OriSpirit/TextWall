@@ -53,7 +53,7 @@ public class TextFileReader {
             }
             if(!t.substring(0, temp+1).equals(""))
                 MainMod.messages.add(t.substring(0, temp+1));
-            t = t.substring(temp+1);
+            t = t.substring(temp+1).trim();
         }
     }
 }
