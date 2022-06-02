@@ -14,10 +14,13 @@ public class TextFileReader {
             File file = new File(directory);
             FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
+            MainMod.messages.clear();
             String line;
+            message.send("Parsing data...");
             while ((line = br.readLine()) != null) {
                 safeChatSize(line);
             }
+            message.send("Successfully imported " + MainMod.messages.size() + " lines.");
             fr.close();
         } catch (IOException ex) {
             message.send("§cAn error has occurred: " + ex.getClass().getCanonicalName() + " (Check console for more information)");

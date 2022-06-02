@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 public class CommandHandler extends CommandBase {
-    static String fileDestination;
+    static String fileDestination = "";
     private boolean saf = false;
 
     @Override
